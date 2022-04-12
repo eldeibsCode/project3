@@ -1,10 +1,13 @@
 const http = require('http');
 
+const fs = require('fs');
+
 const url = require('url');
 const querystring = require('querystring');
 
 const server = http.createServer((req, res)=>{
     const url = req.url;
+    const method = req.method;
     if (url === '/'){
         res.setHeader('Content-type', 'text/html');
         res.write('<html>');
@@ -13,6 +16,12 @@ const server = http.createServer((req, res)=>{
         res.write('</html>');
         return res.end();
     } 
+    if (url ==='/message' && method=='POST'){
+        fs.writeFileSync('./usersData/message.txt', 'Dummy');
+        res.statusCode=302;
+        res.setHeader('Location', '/');
+        return res.end();
+    }
 });
 
 server.listen(3000);
