@@ -4,6 +4,8 @@ const url = require('url');
 const querystring = require('querystring');
 
 const server = http.createServer((req, res)=>{
+    const url = req.url;
+    if (url === '/')
     console.log(req);
 });
 
