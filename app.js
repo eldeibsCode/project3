@@ -26,12 +26,17 @@ const server = http.createServer((req, res)=>{
             const parsedBody = Buffer.concat(body).toString();
             // console.log(parsedBody);
             const message = parsedBody.split('=')[1];
-            fs.writeFileSync('./usersData/message.txt', message);
+            fs.writeFile('./usersData/message.txt', message, (err) => {
+                if(err){
+                    console.log('ERROR: ', err);
+                }
+                res.statusCode=302;
+                res.setHeader('Location', '/');
+                return res.end();
+            });
         })  
         
-        res.statusCode=302;
-        res.setHeader('Location', '/');
-        return res.end();
+        
     }
 });
 
