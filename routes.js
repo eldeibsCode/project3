@@ -40,5 +40,11 @@ const requestHander = (req, res) =>{
     res.write('</html>');
     res.end();
 };
+ 
 
-module.exports = requestHander;
+// module.exports = requestHander;
+
+module.exports = {
+    handler: requestHander,
+    someText: 'Some hard coded text'
+}
