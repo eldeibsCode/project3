@@ -26,6 +26,7 @@ app.set('views', 'views');
 
 const adminData = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
+const errorController = require('./controllers/error');
 
 
 
@@ -42,13 +43,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/admin', adminData);
 app.use(shopRoutes);
 
-app.use((req, res) =>{
-    // console.log("undefined router is visited!");
-    // console.log(req.path);
-    // res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
-
-    res.status(404).render('404', {pageTitle: 'Page not found', path: path.basename(req.url)})
-});
+app.use(errorController.get404);
 
 
 // const server = http.createServer(app);
