@@ -22,7 +22,6 @@ const app = express();
 
 // engine template: ejs
 app.set('view engine', 'ejs');
-
 app.set('views', 'views');
 
 const adminData = require('./routes/admin')
@@ -48,7 +47,7 @@ app.use((req, res) =>{
     // console.log(req.path);
     // res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
 
-    res.status(404).render('404', {pageTitle: 'Page not found'})
+    res.status(404).render('404', {pageTitle: 'Page not found', path: path.basename(req.url)})
 });
 
 
