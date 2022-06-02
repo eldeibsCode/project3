@@ -12,10 +12,10 @@ exports.getAddProduct = (req, res, next) =>{
 };
 
 exports.postAddProduct =  (req, res, next) =>{
-    console.log(req.body);
-    const product = new Product();
-    product.save(req.body.title);
-    // console.log(products);
+    // console.log(req.body);
+    const product = new Product(req.body.title);
+    product.save();
+    console.log('products:', product.fetchAll());
     res.redirect("/");
 }
 exports.getProducts =  (req, res, next) =>{
@@ -23,5 +23,7 @@ exports.getProducts =  (req, res, next) =>{
     // console.log('shop.js:', adminData.products);
     // res.sendFile(path.join(__dirname, '..', 'views', 'shop.html'));
 
-    res.render('shop', {prods: Product.fetchAll(), pageTitle: 'Shop', path: '/'});
+    Product.fetchAll( products => {
+        res.render('shop', {prods: products, pageTitle: 'Shop', path: '/'});
+    });
 }
