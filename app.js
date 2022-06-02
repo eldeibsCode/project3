@@ -39,7 +39,7 @@ app.use('/', (req, res, next)=>{
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/admin',adminData.routes);
+app.use('/admin', adminData);
 app.use(shopRoutes);
 
 app.use((req, res) =>{
