@@ -6,9 +6,16 @@ exports.getProducts =  (req, res, next) =>{
     // res.sendFile(path.join(__dirname, '..', 'views', 'shop.html'));
 
     Product.fetchAll( products => {
-        res.render('shop/product-list', {prods: products, pageTitle: 'Shop', path: '/'});
+        res.render('shop/product-list', {prods: products, pageTitle: 'All products', path: '/products'});
     });
 }
-exports.getCart = (req, res)=>{
-    res.render('shop/cart', {pageTitle: 'Cart', path: '/cart'});
+
+exports.getIndex = (req, res, next) => {
+    res.render('shop/index', {pageTitle: 'Shop', path: '/'});
+}
+
+exports.getCart = (req, res, next)=>{
+    res.render("shop/cart", { 
+        pageTitle: "Your Cart", 
+        path: "/cart" });
 } 
