@@ -10,4 +10,11 @@ const productsController = require('../controllers/products')
 
 router.get('/', productsController.getProducts);
 
+router.get('/products', productsController.getCart); //
+
+router.get('/cart', productsController.getCart); //
+
+router.get('/checkout', productsController.getCart);//
+
+
 module.exports = router;

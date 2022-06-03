@@ -26,3 +26,6 @@ exports.getProducts =  (req, res, next) =>{
         res.render('shop/product-list', {prods: products, pageTitle: 'Shop', path: '/'});
     });
 }
+exports.getCart = (req, res)=>{
+    res.render('shop/cart', {pageTitle: 'Cart', path: '/cart'});
+} 
