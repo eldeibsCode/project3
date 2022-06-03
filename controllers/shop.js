@@ -6,7 +6,10 @@ exports.getProducts =  (req, res, next) =>{
     // res.sendFile(path.join(__dirname, '..', 'views', 'shop.html'));
 
     Product.fetchAll( products => {
-        res.render('shop/product-list', {prods: products, pageTitle: 'All products', path: '/products'});
+        res.render('shop/product-list', {
+            prods: products,
+            pageTitle: 'All products',
+            path: '/products'});
     });
 }
 
@@ -19,3 +22,10 @@ exports.getCart = (req, res, next)=>{
         pageTitle: "Your Cart", 
         path: "/cart" });
 } 
+
+exports.getCheckout = (req, res, next) => {
+    res.render("shop/cart", {
+        pageTitle: 'Checkout',
+        path: '/checkout'
+    });
+}
