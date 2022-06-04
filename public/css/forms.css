@@ -1,20 +1,38 @@
-.form-control {
+.form-controll {
     margin: 1rem 0;
 }
 
-.form-control label,
-.form-control input {
+.form-controll label,
+.form-controll input,
+.form-controll textarea {
     display: block;
     width: 100%;
     margin-bottom: 0.25rem;
 }
 
-.form-control input {
-    border: 1px solid #a1a1a1;
+.form-controll input,
+.form-controll textarea {
+    border: 1px solid #dbc441;
     font: inherit;
     border-radius: 2px;
 }
 
-.form-control input:focus {
+.form-controll input:focus, 
+.form-controll textarea:focus {
     outline-color: #00695c;
+}
+
+button{
+    font: inherit;
+    border: 1px solid #6200ff;
+    color: #6200ff;
+    background-color: white;
+    border-radius: 3px;
+    cursor: pointer;
+    width: 100%;
+}
+button:hover,
+button:active{
+    background-color: #6200ff;
+    color: white;
 }

@@ -24,38 +24,9 @@
     text-align: center;
 }
 
-
 /* von mir  */
 .product-form{
     width: 20rem;
     max-width: 90%;
     margin: auto;
-}
-.form-controll{
-    margin: 1rem 0px;
-}
-.form-controll label,
-.form-controll input{
-    display: block;
-    width: 100%;
-
-}
-.form-controll input{
-    border: 1px solid #dbc441;
-    font: inherit;
-    border-radius: 2px;
-}
-button{
-    font: inherit;
-    border: 1px solid #6200ff;
-    color: #6200ff;
-    background-color: white;
-    border-radius: 3px;
-    cursor: pointer;
-    width: 100%;
-}
-button:hover,
-button:active{
-    background-color: #6200ff;
-    color: white;
 }
