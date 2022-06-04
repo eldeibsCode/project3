@@ -15,7 +15,7 @@ exports.getProducts =  (req, res, next) =>{
 
 exports.getIndex = (req, res, next) => {
     Product.fetchAll( products => {
-        res.render('shop/index', {
+        res.render('shop/product-list', {
             prods: products,
             pageTitle: 'Shop',
             path: '/'});
