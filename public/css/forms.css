@@ -1,3 +1,13 @@
+
+/* von mir  */
+.product-form{
+    display: block;
+    width: 20rem;
+    max-width: 90%;
+    margin: auto;
+}
+/* end von mir */
+
 .form-controll {
     margin: 1rem 0;
 }

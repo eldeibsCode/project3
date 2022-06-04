@@ -1,33 +1,32 @@
-.product-form{
+.product-form {
     width: 20rem;
     max-width: 90%;
     margin: auto;
 }
-.form-controll{
-    margin: 1rem 0px;
-}
-.form-controll label,
-.form-controll input{
-    display: block;
-    width: 100%;
 
+.product-item {
+    width: 20rem;
+    max-width: 95%;
 }
-.form-controll input{
-    border: 1px solid #dbc441;
-    font: inherit;
-    border-radius: 2px;
+
+.product__title {
+    font-size: 1.2rem;
+    text-align: center;
 }
-button{
-    font: inherit;
-    border: 1px solid #6200ff;
-    color: #6200ff;
-    background-color: white;
-    border-radius: 3px;
-    cursor: pointer;
-    width: 100%;
+
+.product__price {
+    text-align: center;
+    color: #4d4d4d;
+    margin-bottom: 0.5rem;
 }
-button:hover,
-button:active{
-    background-color: #6200ff;
-    color: white;
+
+.product__description {
+    text-align: center;
+}
+
+/* von mir  */
+.product-form{
+    width: 20rem;
+    max-width: 90%;
+    margin: auto;
 }
