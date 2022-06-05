@@ -7,6 +7,10 @@
 .product-item {
     width: 20rem;
     max-width: 95%;
+    /* von mir */
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    /* end von mir */
 }
 
 .product__title {

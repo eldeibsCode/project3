@@ -33,10 +33,10 @@ const errorController = require('./controllers/error');
 app.use(bodyParser.urlencoded({extended: false}));
 
 // print all requests 
-app.use('/', (req, res, next)=>{
-    console.log(req.url);
-    next();
-});
+// app.use('/', (req, res, next)=>{
+//     console.log(req.url);
+//     next();
+// });
 
 app.use(express.static(path.join(__dirname, 'public')));
 
