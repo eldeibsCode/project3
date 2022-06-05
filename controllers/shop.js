@@ -1,4 +1,5 @@
 const Product = require('../models/products');
+const path = require('../util/path');
 
 exports.getProducts =  (req, res, next) =>{
     // console.log("in another middleware!");
@@ -15,8 +16,14 @@ exports.getProducts =  (req, res, next) =>{
 
 exports.getProduct = (req, res, next) => {
     const prodId = req.params.productId;
-    console.log('productId :', prodId);
-    res.redirect('/');
+    Product.findById(prodId, product => {
+        // console.log(product);
+        res.render('shop/product-detail',{
+            product: product,
+            pageTitle: product.title,
+            path:'/products'
+        });
+    });
 }
 
 exports.getIndex = (req, res, next) => {
