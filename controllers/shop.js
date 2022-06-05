@@ -12,7 +12,7 @@ exports.getProducts =  (req, res, next) =>{
             pageTitle: 'All products',
             path: '/products'});
     });
-}
+};
 
 exports.getProduct = (req, res, next) => {
     const prodId = req.params.productId;
@@ -24,7 +24,7 @@ exports.getProduct = (req, res, next) => {
             path:'/products'
         });
     });
-}
+};
 
 exports.getIndex = (req, res, next) => {
     Product.fetchAll( products => {
@@ -33,22 +33,28 @@ exports.getIndex = (req, res, next) => {
             pageTitle: 'Shop',
             path: '/'});
     });
-}
+};
 
 exports.getCart = (req, res, next)=>{
     res.render("shop/cart", { 
         pageTitle: "Your Cart", 
         path: "/cart" });
-} 
+};
+exports.postCart = (req, res, next) => {
+    const prodId = req.body.productId;
+    console.log(prodId);
+    res.redirect('/cart');
+};
 
 exports.getOrders = (req, res, next)=>{
     res.render("shop/orders", { 
         pageTitle: "Your Orders", 
         path: "/orders" });
-} 
+};
+
 exports.getCheckout = (req, res, next) => {
     res.render("shop/cart", {
         pageTitle: 'Checkout',
         path: '/checkout'
     });
-}
+};
