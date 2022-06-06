@@ -36,7 +36,7 @@ module.exports = class Cart{
                 cart.products = [...cart.products, updatedProduct];
             }
             cart.totalPrice = +cart.totalPrice + +productPrice;
-
+            cart.totalPrice = cart.totalPrice.toFixed(2);
             fs.writeFile(p, JSON.stringify(cart), (err) => {
                 console.log(err);
             });
@@ -52,7 +52,7 @@ module.exports = class Cart{
             const productQty = product.qty;
             updatedCart.products = updatedCart.products.filter(prod => prod.id !== id);
             updatedCart.totalPrice = updatedCart.totalPrice - productPrice * productQty;
-
+            updatedCart.totalPrice = updatedCart.totalPrice.toFixed(2);
             fs.writeFile(p, JSON.stringify(updatedCart), (err) => {
                 console.log(err);
             });
