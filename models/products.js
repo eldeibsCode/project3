@@ -11,11 +11,9 @@ module.exports = class Product {
     }
 
     save(){
-        if(!this.id){
-            return db.execute(`INSERT INTO project3.products (title, price, description, imageUrl) VALUES ("${this.title}", ${this.price}, "${this.description}", "${this.imageUrl}")`);
-        }else{
-            return db.execute(`INSERT INTO project3.products (id, title, price, description, imageUrl) VALUES (${this.id}, "${this.title}", ${this.price}, "${this.description}", "${this.imageUrl}")`);
-        }   
+        return db.execute(
+            `INSERT INTO project3.products (title, price, description, imageUrl) VALUES (?, ?, ?, ?)`, 
+            [this.title, this.price, this.description, this.imageUrl]);
     }
 
     static deleteById(id){
