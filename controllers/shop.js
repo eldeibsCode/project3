@@ -8,12 +8,16 @@ exports.getProducts =  (req, res, next) =>{
     // console.log('shop.js:', adminData.products);
     // res.sendFile(path.join(__dirname, '..', 'views', 'shop.html'));
 
-    Product.fetchAll( products => {
-        res.render('shop/product-list', {
-            prods: products,
-            pageTitle: 'All products',
-            path: '/products'});
-    });
+    Product.fetchAll()
+        .then(([rows]) => {
+            res.render('shop/product-list', {
+                prods: rows,
+                pageTitle: 'All products',
+                path: '/products'});
+        })
+        .catch(err => {
+            console.log(err);
+        });
 };
 
 exports.getProduct = (req, res, next) => {
