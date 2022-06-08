@@ -29,12 +29,16 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-    Product.fetchAll( products => {
-        res.render('shop/product-list', {
-            prods: products,
-            pageTitle: 'Shop',
-            path: '/'});
-    });
+    Product.fetchAll()
+        .then(([rows, fieldData]) => {
+            res.render('shop/product-list', {
+                prods: rows,
+                pageTitle: 'Shop',
+                path: '/'});
+        })
+        .catch(err => {
+            console.log(err);
+        });
 };
 
 exports.getCart = (req, res, next)=>{
