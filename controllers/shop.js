@@ -22,11 +22,12 @@ exports.getProducts =  (req, res, next) =>{
 exports.getProduct = (req, res, next) => {
     const prodId = req.params.productId;
     // console.log(prodId);
-    Product.findByPk(prodId)
+    // Product.findByPk(prodId)
+    Product.findAll({where: {id: prodId}})
         .then(product => {
-                // console.log(rows[0]);
+                // console.log(product[0]);
                 res.render('shop/product-detail',{
-                    product: product,
+                    product: product[0],
                     pageTitle: product.title,
                     path:'/products'
                 });
