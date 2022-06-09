@@ -67,9 +67,13 @@ exports.postEditProduct = (req, res, next) => {
             product.price = updatedPrice;
             product.imageUrl = updatedImageUrl;
             product.description = updatedDescription;
-            product.save();
+            return product.save();
+        }).then(result => {
+            console.log('Product updated');
+            res.redirect('/admin/products');
         })
         .catch(err => console.log(err));
+    // other approach
     // Product.update({
     //     title: updatedTitle,
     //     price: updatedPrice,
