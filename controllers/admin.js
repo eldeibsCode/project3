@@ -60,22 +60,31 @@ exports.postEditProduct = (req, res, next) => {
     const updatedImageUrl = req.body.imageUrl;
     const updatedPrice = req.body.price;
     const updatedDescription = req.body.description;
-    Product.update({
-        title: updatedTitle,
-        price: updatedPrice,
-        imageUrl: updatedImageUrl,
-        description: updatedDescription
-        }, {
-        where: {
-          id: prodId
-        }})
-        .then(result => {
-            console.log(result);
-            console.log('Product updated')
-            res.redirect('/admin/products');
+
+    Product.findByPk(prodId)
+        .then(product =>{
+            product.title = updatedTitle;
+            product.price = updatedPrice;
+            product.imageUrl = updatedImageUrl;
+            product.description = updatedDescription;
+            product.save();
         })
         .catch(err => console.log(err));
-    
+    // Product.update({
+    //     title: updatedTitle,
+    //     price: updatedPrice,
+    //     imageUrl: updatedImageUrl,
+    //     description: updatedDescription
+    //     }, {
+    //     where: {
+    //       id: prodId
+    //     }})
+    //     .then(result => {
+    //         console.log(result);
+    //         console.log('Product updated')
+    //         res.redirect('/admin/products');
+    //     })
+    //     .catch(err => console.log(err));
 };
 
 exports.getProducts = (req, res, next) => {
