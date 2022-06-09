@@ -7,11 +7,10 @@ exports.getProducts =  (req, res, next) =>{
     // console.log("in another middleware!");
     // console.log('shop.js:', adminData.products);
     // res.sendFile(path.join(__dirname, '..', 'views', 'shop.html'));
-
-    Product.fetchAll()
-        .then(([rows]) => {
+    Product.findAll()
+        .then(products => {
             res.render('shop/product-list', {
-                prods: rows,
+                prods: products,
                 pageTitle: 'All products',
                 path: '/products'});
         })
@@ -22,7 +21,7 @@ exports.getProducts =  (req, res, next) =>{
 
 exports.getProduct = (req, res, next) => {
     const prodId = req.params.productId;
-    console.log(prodId);
+    // console.log(prodId);
     Product.findById(prodId)
         .then(([rows, fieldData]) => {
                 // console.log(rows[0]);
@@ -37,10 +36,10 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-    Product.fetchAll()
-        .then(([rows, fieldData]) => {
+    Product.findAll()
+        .then(products => {
             res.render('shop/product-list', {
-                prods: rows,
+                prods: products,
                 pageTitle: 'Shop',
                 path: '/'});
         })
