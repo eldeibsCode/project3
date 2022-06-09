@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const expressHbs  = require('express-handlebars');
 
 const errorController = require('./controllers/error');
+const sequelize = require('./util/database');
 
 const app = express();
 
@@ -27,7 +28,8 @@ app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 const adminData = require('./routes/admin')
-const shopRoutes = require('./routes/shop')
+const shopRoutes = require('./routes/shop');
+const res = require('express/lib/response');
 
 
 app.use(bodyParser.urlencoded({extended: false}));
@@ -46,6 +48,15 @@ app.use(shopRoutes);
 app.use(errorController.get404);
 
 
-// const server = http.createServer(app);
-// server.listen(3000);
-app.listen(3000);
+sequelize
+    .sync()
+    .then(result => {
+        // console.log(result);
+        // const server = http.createServer(app);
+        // server.listen(3000);
+        app.listen(3000);
+    })
+    .catch(err => {
+        console.log(err);
+    });
+
