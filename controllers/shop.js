@@ -23,11 +23,12 @@ exports.getProduct = (req, res, next) => {
     const prodId = req.params.productId;
     // console.log(prodId);
     // Product.findByPk(prodId)
-    Product.findAll({where: {id: prodId}})
+    // Product.findAll({where: {id: prodId}})
+    Product.findOne({where: {id: prodId}})
         .then(product => {
                 // console.log(product[0]);
                 res.render('shop/product-detail',{
-                    product: product[0],
+                    product: product,
                     pageTitle: product.title,
                     path:'/products'
                 });
