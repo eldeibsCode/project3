@@ -36,14 +36,13 @@ const res = require('express/lib/response');
 
 
 app.use(bodyParser.urlencoded({extended: false}));
-
 // print all requests 
 // app.use('/', (req, res, next)=>{
 //     console.log('app:path:',req.url);
 //     next();
 // });
-
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.use('/admin', adminData);
 app.use(shopRoutes);
@@ -54,9 +53,21 @@ Product.belongsTo(User, {constraints: true, onDelete: 'CASCADE'});
 User.hasMany(Product);
 
 sequelize
+    // .sync({force: true})
     .sync()
     .then(result => {
+        return User.findByPk(1)
         // console.log(result);
+        
+    })
+    .then( user => {
+        if (!user){
+            return User.create({name:'max', email:'max@max.com'});
+        }
+        return Promise.resolve(user);
+    })
+    .then(user => {
+        // console.log(user);
         // const server = http.createServer(app);
         // server.listen(3000);
         app.listen(3000);
