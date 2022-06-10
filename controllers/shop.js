@@ -9,7 +9,7 @@ exports.getProducts = (req, res, next) => {
   // console.log("in another middleware!");
   // console.log('shop.js:', adminData.products);
   // res.sendFile(path.join(__dirname, '..', 'views', 'shop.html'));
-  Product.findAll()
+  Product.fetchAll()
     .then((products) => {
       res.render("shop/product-list", {
         prods: products,
@@ -40,7 +40,7 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-  Product.findAll()
+  Product.fetchAll()
     .then((products) => {
       res.render("shop/product-list", {
         prods: products,
@@ -178,11 +178,4 @@ exports.getOrders = (req, res, next) => {
     })
     .catch(err => console.log(err));
   
-};
-
-exports.getCheckout = (req, res, next) => {
-  res.render("shop/cart", {
-    pageTitle: "Checkout",
-    path: "/checkout",
-  });
 };
