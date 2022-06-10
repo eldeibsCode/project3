@@ -2,6 +2,7 @@ const path = require('../util/path');
 
 const Product = require('../models/products');
 const Cart = require('../models/cart');
+const CartItems = require('../models/cart-item');
 
 exports.getProducts =  (req, res, next) =>{
     // console.log("in another middleware!");
@@ -67,13 +68,29 @@ exports.getCart = (req, res, next)=>{
 
 exports.postCart = (req, res, next) => {
     const prodId = req.body.productId;
+    let cartId;
     // console.log(req.body);
-    Product.findById(prodId, (product) => {
-        // console.log(product);
-        Cart.addProduct(prodId, product.price);
-    });
-    // console.log(prodId);
-    res.redirect('/cart');
+    // Product.findById(prodId, (product) => {
+    //     // console.log(product);
+    //     Cart.addProduct(prodId, product.price);
+    // });
+    // // console.log(prodId);
+    // res.redirect('/cart');
+    req.user.getCart()
+        .then(cart => {
+            cartId = cart.id;
+
+            return CartItems.findOne({where: {cartId: cartId}});
+        })
+        .then(cartitem => {
+            if(!cartitem){
+                return CartItems.create({cartId: cartId, productId: prodId});
+            }else{
+                console.log(cartitem);
+                cartitem.update({quantity: cartitem.quantity + 1});
+            }
+        })
+        .catch(err => console.log(err));
 };
 
 exports.postCartDeleteProduct = (req, res, next) => {
