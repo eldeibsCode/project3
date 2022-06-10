@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const expressHbs  = require('express-handlebars');
 
 const errorController = require('./controllers/error');
-const mongoConnect = require('./util/database');
+const mongoConnect = require('./util/database').mongoConnect;
 
 
 const app = express();
@@ -28,7 +28,7 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
-// const adminData = require('./routes/admin')
+const adminData = require('./routes/admin');
 // const shopRoutes = require('./routes/shop');
 
 // const res = require('express/lib/response');
@@ -49,16 +49,16 @@ app.use((req, res, next) => {
     //         next();
     //     })
     //     .catch(err => console.log(err));
+    next();
 });
 
 
-// app.use('/admin', adminData);
+app.use('/admin', adminData);
 // app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-mongoConnect(client => {
-    console.log(client);
+mongoConnect(() => {
     app.listen(3000);
 });
 
