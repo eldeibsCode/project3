@@ -1,5 +1,8 @@
-const { render } = require("express/lib/response");
+const mongodb = require("mongodb");
+
 const Product = require("../models/products");
+
+const ObjectId = mongodb.ObjectId;
 
 exports.getAddProduct = (req, res, next) => {
   res.render("admin/edit-product", {
@@ -16,7 +19,8 @@ exports.postAddProduct = (req, res, next) => {
   const description = req.body.description;
   const price = req.body.price;
   const product = new Product(title, price, description, imageUrl);
-  product.save()
+  product
+    .save()
     .then((result) => {
       // console.log(result);
       console.log("Created product");
@@ -32,11 +36,9 @@ exports.getEditProduct = (req, res, next) => {
     return res.redirect("/");
   }
   const prodId = req.params.productId;
-  req.user
-    .getProducts(prodId)
+  Product.findById(prodId)
     // Product.findByPk(prodId)
-    .then((products) => {
-      const product = products[0];
+    .then((product) => {
       if (!product) {
         return res.redirect("/");
       }
@@ -52,56 +54,58 @@ exports.getEditProduct = (req, res, next) => {
     });
 };
 
-// exports.postEditProduct = (req, res, next) => {
-//     const prodId = req.body.productId;
-//     const updatedTitle = req.body.title;
-//     const updatedImageUrl = req.body.imageUrl;
-//     const updatedPrice = req.body.price;
-//     const updatedDescription = req.body.description;
+exports.postEditProduct = (req, res, next) => {
+  const prodId = req.body.productId;
+  const updatedTitle = req.body.title;
+  const updatedImageUrl = req.body.imageUrl;
+  const updatedPrice = req.body.price;
+  const updatedDescription = req.body.description;
 
-//     Product.findByPk(prodId)
-//         .then(product =>{
-//             product.title = updatedTitle;
-//             product.price = updatedPrice;
-//             product.imageUrl = updatedImageUrl;
-//             product.description = updatedDescription;
-//             return product.save();
-//         }).then(result => {
-//             console.log('Product updated');
-//             res.redirect('/admin/products');
-//         })
-//         .catch(err => console.log(err));
-//     // other approach
-//     // Product.update({
-//     //     title: updatedTitle,
-//     //     price: updatedPrice,
-//     //     imageUrl: updatedImageUrl,
-//     //     description: updatedDescription
-//     //     }, {
-//     //     where: {
-//     //       id: prodId
-//     //     }})
-//     //     .then(result => {
-//     //         console.log(result);
-//     //         console.log('Product updated')
-//     //         res.redirect('/admin/products');
-//     //     })
-//     //     .catch(err => console.log(err));
-// };
+  const product = new Product(
+    updatedTitle,
+    updatedPrice,
+    updatedDescription,
+    updatedImageUrl,
+    new ObjectId(prodId)
+  );
+  product
+    .save()
+    .then((result) => {
+      console.log("Product updated");
+      res.redirect("/admin/products");
+    })
+    .catch((err) => console.log(err));
+  // other approach
+  // Product.update({
+  //     title: updatedTitle,
+  //     price: updatedPrice,
+  //     imageUrl: updatedImageUrl,
+  //     description: updatedDescription
+  //     }, {
+  //     where: {
+  //       id: prodId
+  //     }})
+  //     .then(result => {
+  //         console.log(result);
+  //         console.log('Product updated')
+  //         res.redirect('/admin/products');
+  //     })
+  //     .catch(err => console.log(err));
+};
 
 exports.getProducts = (req, res, next) => {
-    Product.fetchAll()
+  Product.fetchAll()
     // req.user.getProducts()
-        .then( products => {
-            res.render('admin/products', {
-                prods: products,
-                pageTitle: 'Admin products',
-                path: '/admin/products'
-            });
-        })
-        .catch(err => {
-            console.log(err);
-        });
+    .then((products) => {
+      res.render("admin/products", {
+        prods: products,
+        pageTitle: "Admin products",
+        path: "/admin/products",
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 // exports.postDeleteProduct = (req, res ,next) => {
