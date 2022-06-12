@@ -4,6 +4,7 @@ const Product = require("../models/products");
 const Cart = require("../models/cart");
 const CartItem = require("../models/cart-item");
 const Order = require("../models/order");
+const User = require("../models/user");
 
 exports.getProducts = (req, res, next) => {
   // console.log("in another middleware!");
@@ -74,12 +75,11 @@ exports.postCart = (req, res, next) => {
     .then((product) => {
       return req.user.addToCart(product);
     })
-    .then(result => {
+    .then((result) => {
       // console.log(result);
-      res.redirect('/cart')
+      res.redirect("/cart");
     })
     .catch((err) => console.log(err));
-
 
   // let fetchedCart;
   // let newQuantity = 1;
@@ -135,33 +135,16 @@ exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
   req.user
     .deleteItemFromCart(prodId)
-    .then(result => {
-      res.redirect('/cart');
+    .then((result) => {
+      res.redirect("/cart");
     })
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 };
 
 exports.postOrder = (req, res, next) => {
   let fetchedCart;
   req.user
-    .getCart()
-    .then((cart) => {
-      fetchedCart = cart;
-      return cart.getProducts();
-    })
-    .then((products) => {
-      return req.user
-        .createOrder()
-        .then((order) => {
-          order.addProduct(
-            products.map((product) => {
-              product.orderItem = { quantity: product.cartItem.quantity };
-              return product;
-            })
-          );
-        })
-        .catch((err) => console.log(err));
-    })
+    .addOrder()
     .then((result) => {
       fetchedCart.setProducts(null);
     })
@@ -172,13 +155,14 @@ exports.postOrder = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
-  req.user
-    .getOrders({ include: ["products"] })
+  User.getOrders()
     .then((orders) => {
+      const products = orders[0].items;
+      console.log('OOOOrder:', products);
       res.render("shop/orders", {
         pageTitle: "Your Orders",
         path: "/orders",
-        orders: orders,
+        orders: products,
       });
     })
     .catch((err) => console.log(err));
