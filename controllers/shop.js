@@ -143,11 +143,8 @@ exports.postCartDeleteProduct = (req, res, next) => {
 
 exports.postOrder = (req, res, next) => {
   let fetchedCart;
-  req.user
+  return req.user
     .addOrder()
-    .then((result) => {
-      fetchedCart.setProducts(null);
-    })
     .then((result) => {
       res.redirect("/order");
     })
@@ -155,14 +152,12 @@ exports.postOrder = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
-  User.getOrders()
+  req.user.getOrders()
     .then((orders) => {
-      const products = orders[0].items;
-      console.log('OOOOrder:', products);
       res.render("shop/orders", {
         pageTitle: "Your Orders",
         path: "/orders",
-        orders: products,
+        orders: orders
       });
     })
     .catch((err) => console.log(err));
