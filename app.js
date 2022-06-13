@@ -2,7 +2,8 @@ const path = require("path");
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const expressHbs = require("express-handlebars");
+// const expressHbs = require("express-handlebars");
+const mongoose = require("mongoose");
 
 const errorController = require("./controllers/error");
 const mongoConnect = require("./util/database").mongoConnect;
@@ -59,6 +60,12 @@ app.use(errorController.get404);
 
 const user = new User(1, "Moha");
 
-mongoConnect(() => {
-  app.listen(3000);
-});
+mongoose
+  .connect(
+    "mongodb+srv://eldeib:DeutEgy.1992@cluster3.a03g7.mongodb.net/shop?retryWrites=true&w=majority"
+  )
+  .then((result) => {
+    app.listen(3000);
+  })
+  .catch(err => console.log(err));
+
