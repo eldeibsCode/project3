@@ -1,16 +1,17 @@
-const path = require("../util/path");
+// const mongodb = require('mongodb');
+// const path = require("../util/path");
 
 const Product = require("../models/products");
-const Cart = require("../models/cart");
-const CartItem = require("../models/cart-item");
-const Order = require("../models/order");
-const User = require("../models/user");
+// const Cart = require("../models/cart");
+// const CartItem = require("../models/cart-item");
+// const Order = require("../models/order");
+// const User = require("../models/user");
 
 exports.getProducts = (req, res, next) => {
   // console.log("in another middleware!");
   // console.log('shop.js:', adminData.products);
   // res.sendFile(path.join(__dirname, '..', 'views', 'shop.html'));
-  Product.fetchAll()
+  Product.find()
     .then((products) => {
       res.render("shop/product-list", {
         prods: products,
@@ -25,10 +26,9 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
-  // console.log(prodId);
+  console.log(prodId);
   Product.findById(prodId)
     .then((product) => {
-      // console.log(product[0]);
       res.render("shop/product-detail", {
         product: product,
         pageTitle: product.title,
@@ -41,9 +41,9 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll()
+  Product.find()
     .then((products) => {
-      res.render("shop/product-list", {
+      res.render("shop/index", {
         prods: products,
         pageTitle: "Shop",
         path: "/",

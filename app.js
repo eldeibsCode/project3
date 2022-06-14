@@ -35,12 +35,16 @@ const shopRoutes = require("./routes/shop");
 // const res = require('express/lib/response');
 
 app.use(bodyParser.urlencoded({ extended: false }));
-// print all requests
+
+// // print all requests
 // app.use('/', (req, res, next)=>{
-//     console.log('app:path:',req.url);
-//     next();
+//   console.log('app:path:',req.url);
+//   next();
 // });
+
 app.use(express.static(path.join(__dirname, "public")));
+
+
 
 // app.use((req, res, next) => {
 //   User.findById("62a52cc830f8f738020cc5d7")

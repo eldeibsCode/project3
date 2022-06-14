@@ -95,7 +95,8 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
+  console.log('from getProds');
+  Product.find()
     // req.user.getProducts()
     .then((products) => {
       res.render("admin/products", {
