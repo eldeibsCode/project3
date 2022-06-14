@@ -1,3 +1,4 @@
+const { rawListeners } = require("../models/products");
 const Product = require("../models/products");
 
 exports.getAddProduct = (req, res, next) => {
@@ -18,7 +19,8 @@ exports.postAddProduct = (req, res, next) => {
     title: title,
     price: price,
     description: description,
-    imageUrl: imageUrl
+    imageUrl: imageUrl,
+    userId: req.user
   });
   product
     .save()
@@ -61,16 +63,12 @@ exports.postEditProduct = (req, res, next) => {
   const updatedImageUrl = req.body.imageUrl;
   const updatedPrice = req.body.price;
   const updatedDescription = req.body.description;
-
-  const product = new Product(
-    updatedTitle,
-    updatedPrice,
-    updatedDescription,
-    updatedImageUrl,
-    prodId
-  );
-  product
-    .save()
+  Product.updateOne({_id: prodId}, {
+    title: updatedTitle,
+    price: updatedPrice,
+    description: updatedDescription,
+    imageUrl: updatedImageUrl,
+  })
     .then((result) => {
       console.log("Product updated");
       res.redirect("/admin/products");
@@ -95,7 +93,7 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  console.log('from getProds');
+  console.log("from getProds");
   Product.find()
     // req.user.getProducts()
     .then((products) => {
@@ -112,7 +110,7 @@ exports.getProducts = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.deleteById(prodId)
+  Product.deleteOne({_id: prodId})
     .then(() => {
       res.redirect("/admin/products");
     })
