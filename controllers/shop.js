@@ -2,6 +2,7 @@
 // const path = require("../util/path");
 
 const Product = require("../models/products");
+const Order = require("../models/order");
 // const Cart = require("../models/cart");
 // const CartItem = require("../models/cart-item");
 // const Order = require("../models/order");
@@ -56,9 +57,10 @@ exports.getIndex = (req, res, next) => {
 
 exports.getCart = (req, res, next) => {
   req.user
-    .getCart()
-    .then((products) => {
-      // console.log('PPPPPPPPPPPPPPPPPPPPP', products);
+    .populate("cart.items.productId")
+    .then((user) => {
+      console.log(user.cart.items);
+      const products = user.cart.items;
       res.render("shop/cart", {
         pageTitle: "Your Cart",
         path: "/cart",
@@ -133,8 +135,9 @@ exports.postCart = (req, res, next) => {
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
+  console.log("postCartDeleteProduct :", prodId);
   req.user
-    .deleteItemFromCart(prodId)
+    .removeFromCart(prodId)
     .then((result) => {
       res.redirect("/cart");
     })
@@ -142,22 +145,38 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
-  let fetchedCart;
-  return req.user
-    .addOrder()
+  req.user
+    .populate("cart.items.productId")
+    .then((user) => {
+      const products = user.cart.items.map((i) => {
+        return { quantity: i.quantity, product: { ...i.productId._doc } };
+      });
+      const order = new Order({
+        user: {
+          name: req.user.name,
+          userId: req.user,
+        },
+        products: products,
+      });
+      console.log("order", order);
+      return order.save();
+    })
     .then((result) => {
-      res.redirect("/order");
+      return req.user.clearCart();
+    })
+    .then((result) => {
+      res.redirect("/orders");
     })
     .catch((err) => console.log(err));
 };
 
 exports.getOrders = (req, res, next) => {
-  req.user.getOrders()
+  Order.find({ "user.userId": req.user._id })
     .then((orders) => {
       res.render("shop/orders", {
         pageTitle: "Your Orders",
         path: "/orders",
-        orders: orders
+        orders: orders,
       });
     })
     .catch((err) => console.log(err));
