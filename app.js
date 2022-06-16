@@ -83,7 +83,13 @@ app.use(errorController.get404);
 // const user = new User(1, "Moha");
 
 mongoose
+<<<<<<< HEAD
   .connect(MONGODB_URI)
+=======
+  .connect(
+    "mongodb+srv://username:password@cluster3.a03g7.mongodb.net/collection?retryWrites=true&w=majority"
+  )
+>>>>>>> 04c18ea332894e5a26ad0e291ca94d8ac133281e
   .then((result) => {
     User.findOne().then((user) => {
       if (!user) {
