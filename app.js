@@ -11,12 +11,12 @@ const errorController = require("./controllers/error");
 
 const User = require("./models/user");
 
-const MONGODB_URI = require('./usersData/data').mongodbUri;
+const MONGODB_URI = require("./usersData/data").mongodbUri;
 
 const app = express();
 const store = new mongoDBStore({
   uri: MONGODB_URI,
-  collection: 'sessions'
+  collection: "sessions",
 });
 
 // engine template :Pug
@@ -53,11 +53,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
-  session({ secret: "my secret", resave: false, saveUninitialized: false, store: store})
+  session({
+    secret: "my secret",
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+  })
 );
 
-app.use((req, res, next) => {
-  User.findById("62a8a20b3f634d0bd67ad894")
+app.use("/", (req, res, next) => {
+  User.findById('62a8a20b3f634d0bd67ad894')
     .then((user) => {
       // console.log(user);
       req.user = user;
