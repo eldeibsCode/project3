@@ -231,6 +231,15 @@ form {
   background: red;
   color: white;
 }
+.user-message--error{
+  border: 1px solid red;
+  background-color: #f5b6b6;
+  color: red;
+  padding: 0.3rem;
+  margin-bottom: 1rem;
+  border-radius: 11px;
+  text-align: center;
+}
 
 @media (min-width: 768px) {
   .main-header__nav {

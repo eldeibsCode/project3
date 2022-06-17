@@ -5,18 +5,31 @@ const User = require("../models/user");
 exports.getLogin = (req, res, next) => {
   // const isLoggedIn = req.get("Cookie").trim().split("=")[1];
   // console.log(req.session);
+  // console.log(req.flash('error'));
+  let message = req.flash("error");
+  if (message.length > 0) {
+    message = message[0];
+  } else {
+    message = null;
+  }
   res.render("auth/login", {
     pageTitle: "Login",
     path: "/login",
-    isAuthenticated: req.session.isLoggedIn,
+    errorMessage: message,
   });
 };
 
 exports.getSignup = (req, res, next) => {
+  let message = req.flash("error");
+  if (message.length > 0) {
+    message = message[0];
+  } else {
+    message = null;
+  }
   res.render("auth/signup", {
     path: "/signup",
     pageTitle: "Signup",
-    isAuthenticated: false,
+    errorMessage: message
   });
 };
 
@@ -28,20 +41,22 @@ exports.postLogin = (req, res, next) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
+        req.flash("error", "Invalid email or password.");
         return res.redirect("/login");
       }
       bcrypt
         .compare(password, user.password)
-        .then(isMatched => {
-          if(isMatched){
+        .then((isMatched) => {
+          if (isMatched) {
             req.session.isLoggedIn = true;
             req.session.user = user;
-            return req.session.save(err => {
+            return req.session.save((err) => {
               console.log(err);
-              res.redirect('/');
+              res.redirect("/");
             });
           }
-          return res.redirect('/login');
+          req.flash("error", "Invalid password or Email !!");
+          return res.redirect("/login");
         })
         .catch((err) => {
           console.log(err);
@@ -59,6 +74,7 @@ exports.postSignup = (req, res, next) => {
   User.findOne({ email: email })
     .then((userDoc) => {
       if (userDoc) {
+        req.flash("error", "this email is already used !!");
         return res.redirect("/signup");
       }
       return bcrypt

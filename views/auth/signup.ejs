@@ -20,7 +20,11 @@
                 <label for="confirmPassword">Confirm Password</label>
                 <input type="password" name="confirmPassword" id="confirmPassword">
             </div>
-            
+            <% if(errorMessage) { %> 
+                <div class="user-message--error">
+                  <p><%= errorMessage %></p>
+                </div>
+            <% } %>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <button class="btn" type="submit">Signup</button>
         </form>
