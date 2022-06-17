@@ -26,7 +26,7 @@ exports.postAddProduct = (req, res, next) => {
     .save()
     .then((result) => {
       // console.log(result);
-      console.log("Created product");
+      // console.log("Created product");
       res.redirect("/admin/products");
     })
     .catch((err = (err) => console.log(err)));
@@ -70,7 +70,7 @@ exports.postEditProduct = (req, res, next) => {
     imageUrl: updatedImageUrl,
   })
     .then((result) => {
-      console.log("Product updated");
+      // console.log("Product updated");
       res.redirect("/admin/products");
     })
     .catch((err) => console.log(err));
@@ -93,7 +93,7 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  console.log("from getProds");
+  // console.log("from getProds");
     Product.find()
     .then((products) => {
       res.render("admin/products", {
