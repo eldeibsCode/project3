@@ -1,8 +1,10 @@
+const bcrypt = require("bcryptjs");
+
 const User = require("../models/user");
 
 exports.getLogin = (req, res, next) => {
   // const isLoggedIn = req.get("Cookie").trim().split("=")[1];
-  console.log(req.session);
+  // console.log(req.session);
   res.render("auth/login", {
     pageTitle: "Login",
     path: "/login",
@@ -19,15 +21,32 @@ exports.getSignup = (req, res, next) => {
 };
 
 exports.postLogin = (req, res, next) => {
-  User.findById("62a8a20b3f634d0bd67ad894")
+  const email = req.body.email;
+  const password = req.body.password;
+
+  // console.log("postLogin");
+  User.findOne({ email: req.body.email })
     .then((user) => {
-      // console.log(user);
-      req.session.isLoggedIn = true;
-      req.session.user = user;
-      req.session.save((err) => {
-        console.log(err);
-        res.redirect("/");
-      });
+      if (!user) {
+        return res.redirect("/login");
+      }
+      bcrypt
+        .compare(password, user.password)
+        .then(isMatched => {
+          if(isMatched){
+            req.session.isLoggedIn = true;
+            req.session.user = user;
+            return req.session.save(err => {
+              console.log(err);
+              res.redirect('/');
+            });
+          }
+          return res.redirect('/login');
+        })
+        .catch((err) => {
+          console.log(err);
+          res.redirect("/login");
+        });
     })
     .catch((err) => console.log(err));
 };
@@ -38,19 +57,23 @@ exports.postSignup = (req, res, next) => {
   const confirmPassword = req.body.confirmPassword;
 
   User.findOne({ email: email })
-    .then(userDoc => {
-      if(userDoc){
-        return res.redirect('/signup');
+    .then((userDoc) => {
+      if (userDoc) {
+        return res.redirect("/signup");
       }
-      const user = new User({
-        email: email,
-        password: password,
-        cart: {items: []}
-      });
-      return user.save();
-    })
-    .then(result => {
-      res.redirect('/login');
+      return bcrypt
+        .hash(password, 12)
+        .then((hashedPassword) => {
+          const user = new User({
+            email: email,
+            password: hashedPassword,
+            cart: { items: [] },
+          });
+          return user.save();
+        })
+        .then((result) => {
+          res.redirect("/login");
+        });
     })
     .catch((err) => {
       console.log(err);
