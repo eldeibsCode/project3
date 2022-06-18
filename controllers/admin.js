@@ -20,7 +20,7 @@ exports.postAddProduct = (req, res, next) => {
     price: price,
     description: description,
     imageUrl: imageUrl,
-    userId: req.user
+    userId: req.user,
   });
   product
     .save()
@@ -63,15 +63,22 @@ exports.postEditProduct = (req, res, next) => {
   const updatedImageUrl = req.body.imageUrl;
   const updatedPrice = req.body.price;
   const updatedDescription = req.body.description;
-  Product.updateOne({_id: prodId}, {
-    title: updatedTitle,
-    price: updatedPrice,
-    description: updatedDescription,
-    imageUrl: updatedImageUrl,
-  })
-    .then((result) => {
-      // console.log("Product updated");
-      res.redirect("/admin/products");
+  Product.findById(prodId)
+    .then((product) => {
+      // console.log(product.userId);
+      // console.log(req.user._id);
+      if (product.userId.toString() !== req.user._id.toString()) {
+        // console.log('user not matched!!!');
+        return res.redirect("/");
+      }
+      product.title = updatedTitle;
+      product.price = updatedPrice;
+      product.description = updatedDescription;
+      product.imageUrl = updatedImageUrl;
+      return product.save().then((result) => {
+        // console.log("Product updated");
+        res.redirect("/admin/products");
+      });
     })
     .catch((err) => console.log(err));
   // other approach
@@ -94,7 +101,7 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
   // console.log("from getProds");
-    Product.find()
+  Product.find({userId: req.user._id})
     .then((products) => {
       res.render("admin/products", {
         prods: products,
@@ -109,7 +116,7 @@ exports.getProducts = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.deleteOne({_id: prodId})
+  Product.deleteOne({ _id: prodId, userId: req.user._id })
     .then(() => {
       res.redirect("/admin/products");
     })
