@@ -45,8 +45,6 @@ const adminData = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
 
-// const res = require('express/lib/response');
-
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // // print all requests
